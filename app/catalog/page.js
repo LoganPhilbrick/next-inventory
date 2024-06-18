@@ -27,12 +27,12 @@ export default function Catalog() {
       <div>Loading...</div>
     </div>
   ) : (
-    <div>
+    <div className="min-h-screen">
       {list.map((item, index) => (
         <main key={index} className="m-4 border rounded-lg w-fit p-4">
           <div>Item Type: {item.type}</div>
           <div>Item Name: {item.itemData.name}</div>
-          <div>Item Id: {item.id}</div>
+          <div>{`Item Name: ${(parseInt(item.itemData.variations[0].itemVariationData.priceMoney.amount) / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}`}</div>
         </main>
       ))}
     </div>
