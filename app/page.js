@@ -1,5 +1,34 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { getCatalog } from "./server/getCatalog/route";
+
+import CatalogList from "./components/catalogList";
+import CatalogAddForm from "./components/catalogAddForm";
 
 export default function Home() {
-  return <main className="flex min-h-screen flex-col items-center justify-between p-24"></main>;
+  const [list, setList] = useState(null);
+
+  function filterCat(objects) {
+    return objects.type === "ITEM";
+  }
+
+  useEffect(() => {
+    if (!list) {
+      const getList = async () => {
+        const catalog = await getCatalog();
+        const newCat = catalog.filter(filterCat);
+        setList(newCat);
+        console.log(newCat);
+      };
+      getList();
+    }
+  });
+
+  return (
+    <main className="flex min-h-screen flex-col items-center pt-8">
+      <CatalogAddForm setList={setList} list={list} />
+      <CatalogList list={list} />
+    </main>
+  );
 }
